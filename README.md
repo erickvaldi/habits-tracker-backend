@@ -7,8 +7,9 @@ Backend en Node.js + Express conectado a MongoDB (Atlas) para gestionar hábitos
 - npm
 - MongoDB Atlas (o MongoDB local)
 
-```md
+
 ## Instalación
+
 ```bash
 npm install
 
