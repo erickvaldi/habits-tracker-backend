@@ -36,4 +36,25 @@ router.delete('/habits/:id', async (req, res) => {
   }
 });
 
+
+router.put('/habits/:id', async (req, res) => {
+  try {
+    const { title, description } = req.body;
+
+    const updatedHabit = await Habit.findByIdAndUpdate(
+      req.params.id,
+      { title, description },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedHabit) {
+      return res.status(404).json({ message: 'Habit not found' });
+    }
+
+    res.json(updatedHabit);
+  } catch (err) {
+    res.status(400).json({ message: 'Error updating habit' });
+  }
+});
+
 module.exports = router;
