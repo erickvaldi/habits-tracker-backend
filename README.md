@@ -1,4 +1,3 @@
-```md
 # Habits Tracker Backend - Semana 1
 
 Backend en Node.js + Express conectado a MongoDB (Atlas) para gestionar hábitos (CRUD).
@@ -8,6 +7,8 @@ Backend en Node.js + Express conectado a MongoDB (Atlas) para gestionar hábitos
 - npm
 - MongoDB Atlas (o MongoDB local)
 
+```md
 ## Instalación
 ```bash
 npm install
+
