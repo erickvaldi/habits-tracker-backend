@@ -1,11 +1,18 @@
-# Habits Tracker Backend - Semana 1
+# Habits Tracker - Semana 1 y Semana 2
 
-Backend en Node.js + Express conectado a MongoDB (Atlas) para gestionar hábitos (CRUD).
+Proyecto dividido en:
+- **backend/**: Node.js + Express + MongoDB (Atlas) para gestionar hábitos (CRUD).
+- **frontend/**: Next.js + Redux Toolkit consumiendo el endpoint GET del backend.
 
 ## Requisitos
 - Node.js
 - npm
 - MongoDB Atlas (o MongoDB local)
+
+---
+
+## Backend (Express + MongoDB)
+
 
 ## Instalación
 
@@ -45,4 +52,31 @@ Base URL: http://localhost:3001
   "description": "Salir a caminar 5 minutos diarios"
 }
 ```
+
+## Frontend (Next.js + Redux Toolkit)
+
+Instalación
+
+```Bash
+
+cd ../frontend
+npm install
+
+```
+
+Ejecutar
+
+```Bash
+
+npm run dev
+
+```
+
+Frontend corriendo en: http://localhost:3000
+
+## Integración con Backend (GET)
+
+El frontend realiza un request GET al backend para obtener todos los hábitos desde:
+
+http://localhost:3001/habits
 
