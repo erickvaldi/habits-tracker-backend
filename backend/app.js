@@ -1,45 +1,57 @@
 const connectDB = require("./config/database");
 connectDB();
 
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const cors = require('cors');
+var createError = require("http-errors");
+var express = require("express");
+var path = require("path");
+var cookieParser = require("cookie-parser");
+var logger = require("morgan");
+const cors = require("cors");
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-// const habitsRouter = require("./routes/habits"); // si lo tienes separado
+const authRouter = require("./routes/auth");
+const habitsRouter = require("./routes/habits");
+var indexRouter = require("./routes/index");
+var usersRouter = require("./routes/users");
 
 var app = express();
+
+/** Middlewares globales */
 app.use(cors());
+app.use(logger("dev"));
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-app.use(logger('dev'));
+/** IMPORTANTÍSIMO: esto permite leer JSON (req.body) */
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-// app.use('/api', habitsRouter); // para /api/habits
+/** View engine setup (jade) */
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "jade");
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
+/** Health check */
+app.get("/health", (req, res) => {
+  res.json({ ok: true });
+});
+
+/** Rutas */
+app.use("/auth", authRouter);     // /auth/register, /auth/login
+app.use("/habits", habitsRouter); // /habits, /habits/:id, /habits/:id/done
+app.use("/", indexRouter);        // home jade
+app.use("/users", usersRouter);
+
+/** 404 */
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
-// error handler
-app.use(function(err, req, res, next) {
+/** Error handler */
+app.use(function (err, req, res, next) {
   res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.error = req.app.get("env") === "development" ? err : {};
   res.status(err.status || 500);
-  res.render('error');
+  res.render("error");
 });
 
 module.exports = app;
