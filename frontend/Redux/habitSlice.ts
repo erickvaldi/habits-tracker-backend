@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { fetchHabits, doneHabit } from "../services/habits";
+import { fetchHabits, doneHabit, createHabit } from "../services/habits";
 
 type Habit = {
   _id: string;
@@ -7,7 +7,7 @@ type Habit = {
   description: string;
   createdAt?: string;
 
-  // Semana 4 (racha)
+  // Semana 4/5 (racha)
   currentStreak?: number;
   bestStreak?: number;
   lastDoneDate?: string | null;
@@ -33,6 +33,14 @@ export const doneHabitThunk = createAsyncThunk("habit/doneHabit", async (id: str
   return await doneHabit(id);
 });
 
+// Semana 5: crear hábitos desde el frontend
+export const createHabitThunk = createAsyncThunk(
+  "habit/createHabit",
+  async ({ title, description }: { title: string; description: string }) => {
+    return await createHabit(title, description);
+  }
+);
+
 const habitSlice = createSlice({
   name: "habit",
   initialState,
@@ -57,9 +65,16 @@ const habitSlice = createSlice({
       .addCase(doneHabitThunk.fulfilled, (state, action) => {
         const updated = action.payload;
         const idx = state.habits.findIndex((h) => h._id === updated._id);
-        if (idx !== -1) {
-          state.habits[idx] = updated;
-        }
+        if (idx !== -1) state.habits[idx] = updated;
+      })
+
+      // createHabit
+      .addCase(createHabitThunk.fulfilled, (state, action) => {
+        // lo agregamos al inicio para que se vea inmediatamente
+        state.habits.unshift(action.payload);
+      })
+      .addCase(createHabitThunk.rejected, (state, action) => {
+        state.error = action.error.message || "Error creating habit";
       });
   },
 });
