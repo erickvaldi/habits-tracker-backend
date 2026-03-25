@@ -1,4 +1,4 @@
-const API = "http://localhost:3001";
+const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 const authHeaders = () => {
   const token = localStorage.getItem("token");
@@ -41,7 +41,7 @@ export const doneHabit = async (id: string) => {
   return res.json();
 };
 
-// ✅ Semana 5: crear hábitos desde el frontend
+// Semana 5: crear hábitos desde el frontend
 export const createHabit = async (title: string, description: string) => {
   const res = await fetch(`${API}/habits`, {
     method: "POST",
