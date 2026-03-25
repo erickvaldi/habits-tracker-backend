@@ -24,25 +24,15 @@ export default function LoginPage() {
       <div className="max-w-md mx-auto space-y-4">
         <h1 className="text-3xl font-bold text-red-500">Login</h1>
 
-        <input
-          className="w-full p-3 rounded bg-zinc-900 border border-zinc-800"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+        <input className="w-full p-3 rounded bg-zinc-900 border border-zinc-800"
+          placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
 
-        <input
-          className="w-full p-3 rounded bg-zinc-900 border border-zinc-800"
-          placeholder="Password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <input className="w-full p-3 rounded bg-zinc-900 border border-zinc-800"
+          placeholder="Password" type="password" value={password}
+          onChange={(e) => setPassword(e.target.value)} />
 
-        <button
-          onClick={onLogin}
-          className="w-full py-3 rounded bg-zinc-800 hover:bg-zinc-700 border border-zinc-700"
-        >
+        <button onClick={onLogin}
+          className="w-full py-3 rounded bg-zinc-800 hover:bg-zinc-700 border border-zinc-700">
           Iniciar sesión
         </button>
 

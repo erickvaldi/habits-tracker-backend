@@ -1,6 +1,8 @@
 const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
-const authHeaders = () => {
+const authHeaders = (): HeadersInit => {
+  // En build SSR puede no existir window/localStorage
+  if (typeof window === "undefined") return {};
   const token = localStorage.getItem("token");
   return token ? { Authorization: `Bearer ${token}` } : {};
 };
@@ -8,12 +10,10 @@ const authHeaders = () => {
 const handleErrors = async (res: Response, defaultMessage: string) => {
   if (res.ok) return;
 
-  // mensaje más claro para 401
   if (res.status === 401) {
     throw new Error("Unauthorized: debes iniciar sesión (token)");
   }
 
-  // intenta leer mensaje del backend si existe
   try {
     const data = await res.json();
     throw new Error(data?.message || defaultMessage);
@@ -24,7 +24,7 @@ const handleErrors = async (res: Response, defaultMessage: string) => {
 
 export const fetchHabits = async () => {
   const res = await fetch(`${API}/habits`, {
-    headers: { ...authHeaders() },
+    headers: authHeaders(),
   });
 
   await handleErrors(res, "Failed to fetch habits");
@@ -34,14 +34,13 @@ export const fetchHabits = async () => {
 export const doneHabit = async (id: string) => {
   const res = await fetch(`${API}/habits/${id}/done`, {
     method: "POST",
-    headers: { ...authHeaders() },
+    headers: authHeaders(),
   });
 
   await handleErrors(res, "Failed to mark done");
   return res.json();
 };
 
-// Semana 5: crear hábitos desde el frontend
 export const createHabit = async (title: string, description: string) => {
   const res = await fetch(`${API}/habits`, {
     method: "POST",
